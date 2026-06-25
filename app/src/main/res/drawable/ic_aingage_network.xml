@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="180dp"
+    android:height="180dp"
+    android:viewportWidth="180"
+    android:viewportHeight="180">
+
+    <!--
+        Octagon nodes:
+        P0=(80,8)   P1=(148,24)  P2=(172,88)  P3=(154,152)
+        P4=(90,172) P5=(24,154)  P6=(8,90)    P7=(26,28)
+    -->
+
+    <!-- Inner cross-connections (light peach) -->
+    <path android:fillColor="#00000000" android:strokeColor="#F5C9A0" android:strokeWidth="1.8"
+        android:pathData="M80,8 L90,172"/>
+    <path android:fillColor="#00000000" android:strokeColor="#F5C9A0" android:strokeWidth="1.8"
+        android:pathData="M80,8 L154,152"/>
+    <path android:fillColor="#00000000" android:strokeColor="#F5C9A0" android:strokeWidth="1.8"
+        android:pathData="M80,8 L24,154"/>
+    <path android:fillColor="#00000000" android:strokeColor="#F5C9A0" android:strokeWidth="1.8"
+        android:pathData="M148,24 L24,154"/>
+    <path android:fillColor="#00000000" android:strokeColor="#F5C9A0" android:strokeWidth="1.8"
+        android:pathData="M148,24 L8,90"/>
+    <path android:fillColor="#00000000" android:strokeColor="#F5C9A0" android:strokeWidth="1.8"
+        android:pathData="M172,88 L26,28"/>
+    <path android:fillColor="#00000000" android:strokeColor="#F5C9A0" android:strokeWidth="1.8"
+        android:pathData="M172,88 L8,90"/>
+    <path android:fillColor="#00000000" android:strokeColor="#F5C9A0" android:strokeWidth="1.8"
+        android:pathData="M154,152 L26,28"/>
+
+    <!-- Outer octagon border (orange) -->
+    <path android:fillColor="#00000000" android:strokeColor="#F5A623" android:strokeWidth="3.5"
+        android:pathData="M80,8 L148,24 L172,88 L154,152 L90,172 L24,154 L8,90 L26,28 Z"/>
+
+    <!-- Node circles (orange filled) - using arc paths -->
+    <!-- P0 (80,8) -->
+    <path android:fillColor="#F5A623"
+        android:pathData="M74,8 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/>
+    <!-- P1 (148,24) -->
+    <path android:fillColor="#F5A623"
+        android:pathData="M142,24 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/>
+    <!-- P2 (172,88) -->
+    <path android:fillColor="#F5A623"
+        android:pathData="M166,88 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/>
+    <!-- P3 (154,152) -->
+    <path android:fillColor="#F5A623"
+        android:pathData="M148,152 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/>
+    <!-- P4 (90,172) -->
+    <path android:fillColor="#F5A623"
+        android:pathData="M84,172 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/>
+    <!-- P5 (24,154) -->
+    <path android:fillColor="#F5A623"
+        android:pathData="M18,154 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/>
+    <!-- P6 (8,90) -->
+    <path android:fillColor="#F5A623"
+        android:pathData="M2,90 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/>
+    <!-- P7 (26,28) -->
+    <path android:fillColor="#F5A623"
+        android:pathData="M20,28 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"/>
+
+</vector>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_leads"
+        android:icon="@drawable/ic_tab_chat"
+        android:title="Leads" />
+
+    <item
+        android:id="@+id/nav_customer"
+        android:icon="@drawable/ic_tab_chat"
+        android:title="Customer" />
+
+    <item
+        android:id="@+id/nav_im"
+        android:icon="@drawable/ic_tab_people"
+        android:title="IM" />
+
+    <item
+        android:id="@+id/nav_reviews"
+        android:icon="@drawable/ic_tab_star"
+        android:title="Reviews" />
+
+</menu>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Aingage Brand Colors -->
+    <color name="aingage_orange">#F5A623</color>
+    <color name="aingage_orange_light">#F5C9A0</color>
+    <color name="aingage_teal">#1B7A9E</color>
+    <color name="aingage_blue_button">#3A7FC1</color>
+    <color name="aingage_text_gray">#9E9E9E</color>
+    <color name="aingage_text_dark">#1A1A1A</color>
+    <color name="aingage_divider">#DDDDDD</color>
+</resources>
