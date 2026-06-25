@@ -46,7 +46,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun isLoggedIn(): Boolean =
         PreferenceManager.getLoginDetails(this) != null &&
-                PreferenceManager.getParticipantId(this) != 0
+                !PreferenceManager.getAuthToken(this).isNullOrEmpty()
 
     private fun hasUserCredentials(): Boolean =
         !PreferenceManager.getSavedUserId(this).isNullOrEmpty()

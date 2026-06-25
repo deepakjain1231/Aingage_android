@@ -1,5 +1,6 @@
 package com.example.aingage.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.aingage.ChatActivity
 import com.example.aingage.R
 import com.example.aingage.adapter.ContactAdapter
 import com.example.aingage.model.ContactItem
@@ -130,7 +132,13 @@ abstract class ContactListFragment : Fragment() {
         recyclerView.visibility = if (show) View.GONE else View.VISIBLE
     }
 
-    open fun onItemClicked(item: ContactItem) {}
+    open fun onItemClicked(item: ContactItem) {
+        val intent = Intent(requireContext(), ChatActivity::class.java).apply {
+            putExtra(ChatActivity.EXTRA_CONTACT_NAME, item.name)
+            putExtra(ChatActivity.EXTRA_PARTICIPANT_ID, item.participantId)
+        }
+        startActivity(intent)
+    }
 }
 
 // Extension helpers for JsonObject

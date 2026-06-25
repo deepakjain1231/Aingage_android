@@ -24,6 +24,21 @@ interface ApiService {
         @Url url: String,
         @HeaderMap headers: Map<String, String>
     ): Response<JsonArray>
+
+    // Chat messages between two participants
+    @GET
+    suspend fun getMessages(
+        @Url url: String,
+        @HeaderMap headers: Map<String, String>
+    ): Response<JsonArray>
+
+    // Send a text message
+    @POST
+    suspend fun postMessage(
+        @Url url: String,
+        @HeaderMap headers: Map<String, String>,
+        @Body body: JsonObject
+    ): Response<JsonObject>
 }
 
 // Separate interface for BASE_URL2 (reviews)
