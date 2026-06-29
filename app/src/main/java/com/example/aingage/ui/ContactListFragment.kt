@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.aingage.ChatActivity
 import com.example.aingage.R
 import com.example.aingage.adapter.ContactAdapter
+import com.example.aingage.network.SignalRManager
 import com.example.aingage.model.ContactItem
 import com.example.aingage.network.ApiConstants
 import com.example.aingage.network.RetrofitClient
@@ -57,6 +58,13 @@ abstract class ContactListFragment : Fragment() {
         }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
+
+        // Observe SignalR → refresh contacts list (matches iOS getCustomersAPICalling notification)
+        lifecycleScope.launch {
+            SignalRManager.contactsUpdated.collect {
+                loadList(showLoader = false)
+            }
+        }
 
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

@@ -8,7 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.aingage"
+        applicationId = "com.ivantage360.aingageapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

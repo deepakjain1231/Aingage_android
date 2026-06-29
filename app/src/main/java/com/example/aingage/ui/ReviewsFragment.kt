@@ -1,5 +1,6 @@
 package com.example.aingage.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aingage.R
+import com.example.aingage.ReplyReviewActivity
 import com.example.aingage.adapter.ReviewAdapter
 import com.example.aingage.model.ReviewItem
 import com.example.aingage.network.ApiConstants
@@ -36,7 +38,17 @@ class ReviewsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         progressBar = view.findViewById(R.id.progressBar)
 
-        adapter = ReviewAdapter(emptyList()) { /* TODO: open reply screen */ }
+        adapter = ReviewAdapter(emptyList()) { item ->
+            val intent = Intent(requireContext(), ReplyReviewActivity::class.java).apply {
+                putExtra(ReplyReviewActivity.EXTRA_REVIEW_ID, item.id)
+                putExtra(ReplyReviewActivity.EXTRA_DISPLAY_NAME, item.displayName)
+                putExtra(ReplyReviewActivity.EXTRA_COMMENT, item.comment)
+                putExtra(ReplyReviewActivity.EXTRA_STAR_RATING, item.starRating)
+                putExtra(ReplyReviewActivity.EXTRA_PROFILE_PHOTO_URL, item.profilePhotoUrl)
+                putExtra(ReplyReviewActivity.EXTRA_PHONE_NO, item.phoneNo)
+            }
+            startActivity(intent)
+        }
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
@@ -46,31 +58,20 @@ class ReviewsFragment : Fragment() {
     private fun loadReviews() {
         progressBar.visibility = View.VISIBLE
 
-        // Get company name - try AppSession first, fallback to SharedPrefs
         val companyName = AppSession.companyName.ifEmpty {
             PreferenceManager.getCompanyName(requireContext()) ?: ""
         }
 
-        // Matches iOS: BASE_URL2 + GET_ALL_REVIEWS + "clientName=X&limit=50&pageno=0"
         val url = ApiConstants.BASE_URL2 +
                 ApiConstants.GET_ALL_REVIEWS +
                 "clientName=${java.net.URLEncoder.encode(companyName, "UTF-8")}&limit=50&pageno=0"
 
-        Log.d("ReviewsFragment", "Loading reviews from: $url")
-        Log.d("ReviewsFragment", "Company name: $companyName")
-
         lifecycleScope.launch {
             try {
                 val response = RetrofitClient.reviewApiService.getAllReviews(url)
-
                 progressBar.visibility = View.GONE
-                Log.d("ReviewsFragment", "Response code: ${response.code()}")
-
                 if (response.isSuccessful && response.body() != null) {
-                    Log.d("ReviewsFragment", "Response body: ${response.body()}")
                     parseReviews(response.body()!!)
-                } else {
-                    Log.e("ReviewsFragment", "Error: ${response.code()} - ${response.errorBody()?.string()}")
                 }
             } catch (e: Exception) {
                 progressBar.visibility = View.GONE
@@ -81,9 +82,6 @@ class ReviewsFragment : Fragment() {
 
     private fun parseReviews(json: JsonObject) {
         try {
-            Log.d("ReviewsFragment", "Parsing: $json")
-
-            // Structure: { "data": [ { "location_reviews": [ {review}, {review}, ... ] } ] }
             val dataArray = json.getAsJsonArray("data")
             val reviewsArray = dataArray.get(0).asJsonObject
                 .getAsJsonArray("location_reviews")
@@ -99,18 +97,18 @@ class ReviewsFragment : Fragment() {
                     val date = dateRaw.split(" ").firstOrNull() ?: dateRaw
 
                     ReviewItem(
+                        id = obj.optString("id"),
                         displayName = obj.optString("displayName"),
                         comment = obj.optString("comment"),
                         starRating = starCount,
                         createDate = date,
-                        profilePhotoUrl = obj.optString("profilePhotoUrl")
+                        profilePhotoUrl = obj.optString("profilePhotoUrl"),
+                        phoneNo = obj.optString("phoneNo")
                     )
                 }.getOrNull()
             }
 
-            Log.d("ReviewsFragment", "Parsed ${items.size} reviews")
             adapter.updateData(items)
-
         } catch (e: Exception) {
             Log.e("ReviewsFragment", "Parse error: ${e.message}", e)
         }

@@ -100,4 +100,9 @@ class ChatAdapter(
         items = newItems
         notifyDataSetChanged()
     }
+
+    fun appendMessage(item: MessageItem) {
+        items = items + item
+        notifyItemInserted(items.size - 1)
+    }
 }

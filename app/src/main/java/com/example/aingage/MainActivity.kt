@@ -10,6 +10,7 @@ import com.example.aingage.ui.CustomerFragment
 import com.example.aingage.ui.IMFragment
 import com.example.aingage.ui.LeadsFragment
 import com.example.aingage.ui.ReviewsFragment
+import com.example.aingage.network.SignalRManager
 import com.example.aingage.utils.AppSession
 import com.example.aingage.utils.PreferenceManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,6 +31,9 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize session from saved prefs
         AppSession.init(this)
+
+        // Start SignalR for real-time messages (matches iOS signalR() call)
+        SignalRManager.connect(AppSession.authToken)
 
         btnLogout = findViewById(R.id.btnLogout)
         bottomNav = findViewById(R.id.bottomNav)
@@ -70,6 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun performLogout() {
+        SignalRManager.disconnect()
         // Clear login data but keep CompanyCode and user credentials (same as iOS)
         PreferenceManager.clearLoginDetails(this)
         PreferenceManager.saveParticipantId(this, 0)

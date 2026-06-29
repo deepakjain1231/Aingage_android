@@ -3,6 +3,9 @@ package com.example.aingage
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
@@ -15,6 +18,7 @@ import com.example.aingage.adapter.ChatAdapter
 import com.example.aingage.model.MessageItem
 import com.example.aingage.network.ApiConstants
 import com.example.aingage.network.RetrofitClient
+import com.example.aingage.network.SignalRManager
 import com.example.aingage.utils.AppSession
 import com.google.gson.JsonObject
 import kotlinx.coroutines.delay
@@ -71,6 +75,13 @@ class ChatActivity : AppCompatActivity() {
             } else false
         }
 
+        // Observe SignalR events → auto-refresh chat (matches iOS messagesWithParticipantAPICalling notification)
+        lifecycleScope.launch {
+            SignalRManager.chatUpdated.collect {
+                loadMessages(showLoader = false)
+            }
+        }
+
         loadMessages()
     }
 
@@ -122,6 +133,20 @@ class ChatActivity : AppCompatActivity() {
 
         etMessage.setText("")
 
+        // Optimistic UI: append message immediately with current local time
+        val nowFormatted = SimpleDateFormat("yyyy-MM-dd HH:mm:ss a", Locale.getDefault()).format(Date())
+        val optimisticItem = MessageItem(
+            message = text,
+            messageType = "TEXT",
+            filename = "",
+            addedOn = nowFormatted,
+            fromParticipantId = AppSession.participantId,
+            toParticipantId = contactParticipantId
+        )
+        adapter.appendMessage(optimisticItem)
+        recyclerView.scrollToPosition(adapter.itemCount - 1)
+
+        // API call in background — refresh list on success
         val url = ApiConstants.BASE_URL + ApiConstants.POST_MESSAGE
         val body = JsonObject().apply {
             addProperty("ToParticipantId", contactParticipantId.toString())
@@ -133,7 +158,7 @@ class ChatActivity : AppCompatActivity() {
             try {
                 RetrofitClient.apiService.postMessage(url, AppSession.authHeader(), body)
                 delay(300)
-                loadMessages(showLoader = false)
+                loadMessages(showLoader = false) // replace optimistic with real server data
             } catch (_: Exception) {}
         }
     }
