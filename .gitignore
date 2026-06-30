@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Keystore & sensitive info
+aingage-keystore.jks
+KEYSTORE_INFO.md
+app/release/
