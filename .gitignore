@@ -14,7 +14,5 @@
 .cxx
 local.properties
 
-# Keystore & sensitive info
-aingage-keystore.jks
-KEYSTORE_INFO.md
+# Release output
 app/release/
